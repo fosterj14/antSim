@@ -1,25 +1,33 @@
 import pygame
-import pygame_gui
+from tkinter import *
 import ant
+#https://realpython.com/python-gui-tkinter/
 
-WINDOW_HEIGHT = 800
-WINDOW_WIDTH = 600
+numWorkers = 0
+numGatherers = 0
+homeLocation = 0 #this will be a coordinate in the array
+year = 1
+month = 1
+day = 1
 
-pygame.init()
+def gameArray():
+    rows, cols = (40, 40)
+    gameArea = [[0 for i in range(cols)] for j in range(rows)]
+    print (gameArea)
 
-pygame.display.set_caption("Ant Sim")
-main_surface = pygame.display.set_mode((WINDOW_HEIGHT, WINDOW_WIDTH))
-grid_surface = pygame.display.set_mode((600, 600))
-text_surface = pygame.display.set_mode((200, 600))
+window = Tk()
+window.geometry("600x600")
 
-background = pygame.Surface((WINDOW_HEIGHT, WINDOW_WIDTH))
-background.fill(pygame.Color('#123548'))
+infoLabel = Label(text = "Hive information", foreground="white", background="black")
+infoSection = Text(window, height = 4, width = 35)
+hiveInfo = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
+    + "Home Location: " + str(homeLocation) + "\t" + "Day: " + str(day)
+pauseBtn = Button(text="Pause", width=5, height=1, bg="red", fg="white")
 
-is_running = True
+infoLabel.pack()
+infoSection.pack()
+infoSection.insert(END, hiveInfo)
+pauseBtn.pack()
+infoSection.config(state=DISABLED)
 
-while is_running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            is_running = False
-        main_surface.blit(background, (0,0)) #sets the background color
-        pygame.display.update()
+window.mainloop()
