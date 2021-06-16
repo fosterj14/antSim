@@ -23,4 +23,3 @@ while is_running:
             is_running = False
         main_surface.blit(background, (0,0)) #sets the background color
         pygame.display.update()
-#end
