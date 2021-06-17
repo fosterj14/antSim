@@ -16,18 +16,31 @@ def gameArray():
     print (gameArea)
 
 window = Tk()
+window.resizable(width=FALSE, height=FALSE)
 window.geometry("600x600")
+window.title("Ant Sim")
 
-infoLabel = Label(text = "Hive information", foreground="white", background="black")
-infoSection = Text(window, height = 4, width = 35)
+gameInfoFrame = Frame(window)
+playAreaFrame = Frame(height=600, width=600)
+
+
+infoLabel = Label(gameInfoFrame, text = "Hive information", foreground="white", background="black")
+infoSection = Text(gameInfoFrame, height = 4, width = 35)
 hiveInfo = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
     + "Home Location: " + str(homeLocation) + "\t" + "Day: " + str(day)
-pauseBtn = Button(text="Pause", width=5, height=1, bg="red", fg="white")
+pauseBtn = Button(master=gameInfoFrame, text="Pause", width=5, height=1, bg="red", fg="white")
+tempPlayAreaLabel = Label(playAreaFrame, text="This is where the play area will be", fg="white", bg="black", height=600, width=600)
+
 
 infoLabel.pack()
 infoSection.pack()
 infoSection.insert(END, hiveInfo)
 pauseBtn.pack()
+tempPlayAreaLabel.pack()
 infoSection.config(state=DISABLED)
+
+
+gameInfoFrame.pack(side=TOP)
+playAreaFrame.pack()
 
 window.mainloop()
