@@ -3,6 +3,8 @@ from tkinter import *
 import ant
 #https://realpython.com/python-gui-tkinter/
 
+#hello from laptop
+
 numWorkers = 0
 numGatherers = 0
 homeLocation = 0 #this will be a coordinate in the array
