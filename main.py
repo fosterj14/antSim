@@ -10,19 +10,25 @@ homeLocation = 0 #this will be a coordinate in the array
 year = 1
 month = 1
 day = 1
+count = 0
 
 def gameArray():
-    rows, cols = (40, 50)
+    rows, cols = (10, 50)
     gameArea = [[0 for i in range(cols)] for j in range(rows)]
     return gameArea
 
-def updateGameArea(textArea, gameArray):
-    gameArray[0][0] = 'X'
+def updateGameArea():
+    global count #testing
+    gameArray[count%10][count%49] = 'X' #testing
+    print("update") #testing
+    str2 = ""
     for ele in gameArray:
-        textArea.insert(END, " ", "center")
         for ele2 in ele:
-            textArea.insert(END, ele2)
-        playAreaText.insert(END, " \n")
+            str2 += str(ele2)
+        str2 += "\n"
+    playAreaText.config(text=str2)
+    count +=1 #testing
+    window.after(100, updateGameArea)
 
 window = Tk()
 window.resizable(width=FALSE, height=FALSE)
@@ -45,16 +51,16 @@ hiveInfo = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + 
 
 pauseBtn = Button(master=gameInfoFrame, text="Pause", width=5, height=1, bg="red", fg="white")
 
-playAreaText = Text(playAreaFrame)
-playAreaText.tag_configure("center", justify="center")
+playAreaText = Label(playAreaFrame)
 #------------------------------------------------------------------------------------------------------------------------
 
 #prints the array to the text area
+str1 = ""
 for ele in gameArray:
-    playAreaText.insert(END, " ", "center")
     for ele2 in ele:
-        playAreaText.insert(END, ele2)
-    playAreaText.insert(END, " \n")
+        str1 += str(ele2)
+    str1 += "\n"
+playAreaText.config(text=str1)
 #------------------------------------------
 
 #Loads UI elements------------------------------------
@@ -65,10 +71,11 @@ pauseBtn.pack()
 playAreaText.pack()
 
 infoSection.config(state=DISABLED)
-playAreaText.config(state=DISABLED, bg="black", fg="white")
+playAreaText.config(state=DISABLED, bg="white", fg="black")
 
 gameInfoFrame.pack(side=TOP)
 playAreaFrame.pack()
 #------------------------------------------------------
 
+updateGameArea()
 window.mainloop()
