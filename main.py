@@ -2,8 +2,6 @@ from tkinter import *
 import ant
 #https://realpython.com/python-gui-tkinter/
 
-#hello from laptop
-
 numWorkers = 0
 numGatherers = 0
 homeLocation = 0 #this will be a coordinate in the array
@@ -11,15 +9,17 @@ year = 1
 month = 1
 day = 1
 count = 0
+antList = []
 
 def gameArray():
     rows, cols = (10, 50)
     gameArea = [[0 for i in range(cols)] for j in range(rows)]
     return gameArea
 
-def updateGameArea():
-    global count #testing
-    gameArray[count%10][count%49] = 'X' #testing
+def updateGameArea(): #this will be called once after the ant action phase
+    #global count #testing
+    #gameArray[count%10][count%49] = 'X' #testing
+    #go through the list of ants and call their action function
     print("update") #testing
     str2 = ""
     for ele in gameArray:
@@ -27,13 +27,15 @@ def updateGameArea():
             str2 += str(ele2)
         str2 += "\n"
     playAreaText.config(text=str2)
-    count +=1 #testing
-    window.after(100, updateGameArea)
+    #count +=1 #testing
+    window.after(1000, updateGameArea) #this can be moved to the ant action method
 
+#Initializes the game window------------------------------------------------------------------------------------------
 window = Tk()
 window.resizable(width=FALSE, height=FALSE)
 window.geometry("600x600")
 window.title("Ant Sim")
+#---------------------------------------------------------------------------------------------------------------------
 
 gameArray = gameArray()
 
@@ -62,6 +64,15 @@ for ele in gameArray:
     str1 += "\n"
 playAreaText.config(text=str1)
 #------------------------------------------
+
+#Create the starting ants------------------------------
+antList.append(ant.gatherer())
+antList.append(ant.worker())
+print("Printing info...")
+print(antList)
+for ant in antList:
+    ant.printAntInfo()
+#------------------------------------------------------
 
 #Loads UI elements------------------------------------
 infoLabel.pack()
