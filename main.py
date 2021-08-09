@@ -52,7 +52,6 @@ def updateGameArea(day, month, year):
     str2 = ""
     for ele in gameArray: #gets the updated array info
         for ele2 in ele:
-            #str2 += str(ele2)
             str2 += str(ele2.unit)
             str2 += " "
         str2 += "\n"
@@ -105,7 +104,6 @@ playAreaText = Label(playAreaFrame, fg = "white", bg = "black")
 str1 = ""
 for ele in gameArray:
     for ele2 in ele:
-        #str1 += str(ele2)
         str1 += str(ele2.unit)
         str1 += " "
     str1 += "\n"
