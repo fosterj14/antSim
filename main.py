@@ -20,13 +20,36 @@ def gameArray():
     #gameArea = [["-" for i in range(cols)] for j in range(rows)]
 
     gameArea = [[node.node() for i in range(cols)] for j in range(rows)]
+    
+    #this sets the connecting nodes for each space
+    for i in range(len(gameArea)):
+        for j in range(len(gameArea[i])):
+            gameArea[i][j].topLeft = gameArea[(i-1)%rows][(j-1)%cols]
+            gameArea[i][j].top = gameArea[(i-1)%rows][(j)%cols]
+            gameArea[i][j].topRight = gameArea[(i-1)%rows][(j+1)%cols]
+            gameArea[i][j].left = gameArea[(i)%rows][(j-1)%cols]
+            gameArea[i][j].right = gameArea[(i)%rows][(j+1)%cols]
+            gameArea[i][j].bottomLeft = gameArea[(i+1)%rows][(j-1)%cols]
+            gameArea[i][j].bottom = gameArea[(i+1)%rows][(j)%cols]
+            gameArea[i][j].bottomRight = gameArea[(i+1)%rows][(j+1)%cols]
+            
 
     homeLocationX = randint(0, 29)
     homeLocationY = randint(0, 69)
-    #gameArea[homeLocationX][homeLocationY] = "H"
 
     gameArea[homeLocationX][homeLocationY].unit = "H"
     gameArea[homeLocationX][homeLocationY].occupied = True
+
+    #testing the mapping of adjoining nodes
+    #gameArea[homeLocationX][homeLocationY].topLeft.unit = "TL"
+    #gameArea[homeLocationX][homeLocationY].top.unit = "T"
+    #gameArea[homeLocationX][homeLocationY].topRight.unit = "TR"
+    #gameArea[homeLocationX][homeLocationY].left.unit = "L"
+    #gameArea[homeLocationX][homeLocationY].right.unit = "R"
+    #gameArea[homeLocationX][homeLocationY].bottomLeft.unit = "BL"
+    #gameArea[homeLocationX][homeLocationY].bottom.unit = "B"
+    #gameArea[homeLocationX][homeLocationY].bottomRight.unit = "BR"
+    #-------------------------------------------------
 
     return gameArea
 

@@ -28,7 +28,9 @@ class gatherer(ant):
         self.yCoord = homeY
     def action(self):
         #move around map
-            #if the element of where the and will move is "-", then it can move there, if not then it needs to look somewhere else
+            #if the element where the ant will move is node.occupied == False, then it can move there, if not then it needs to look somewhere else
+            #since each position on the grid is now a node, if the node has a connection to the nodes surrounding it, then it would
+            #just need to check for unoccupied connecting nodes
         #if on resource square, collect it
             #if it moves onto a space that has the resource char on it, then it can pick it up
         return
