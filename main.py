@@ -1,19 +1,31 @@
 from tkinter import *
 from random import seed
 from random import randint
+import enum
 import ant
 import node
 #https://realpython.com/python-gui-tkinter/
 
 numWorkers = 1
 numGatherers = 1
-homeLocationX = 0 #this will be a coordinate in the array
-homeLocationY = 0
+homeLocationX = randint(0, 29) #this will be a coordinate in the array
+homeLocationY = randint(0, 69)
 year = 1
 month = 1
 day = 0
 count = 0
 antList = []
+
+class NodeConnection(enum.Enum):
+    topLeft = 1
+    top = 2
+    topRight = 3
+    left = 4
+    right = 5
+    bottomLeft = 6
+    bottom = 7
+    bottomRight = 8
+    
 
 def gameArray():
     rows, cols = (30, 70)
@@ -32,10 +44,6 @@ def gameArray():
             gameArea[i][j].bottomLeft = gameArea[(i+1)%rows][(j-1)%cols]
             gameArea[i][j].bottom = gameArea[(i+1)%rows][(j)%cols]
             gameArea[i][j].bottomRight = gameArea[(i+1)%rows][(j+1)%cols]
-            
-
-    homeLocationX = randint(0, 29)
-    homeLocationY = randint(0, 69)
 
     gameArea[homeLocationX][homeLocationY].unit = "H"
     gameArea[homeLocationX][homeLocationY].occupied = True
@@ -55,6 +63,7 @@ def gameArray():
 
 def updateGameArea(day, month, year):
     print("update") #testing
+    print(len(antList))
     #Time management
     day = day + 1
     if (day%31 == 0):
@@ -63,12 +72,11 @@ def updateGameArea(day, month, year):
         year = year + 1
 
     #ant action call here
-    for ant in antList:
-        ant.action()
-        ant.age = ant.age + 1
-        if (ant.age >= 250):
-            antList.remove(ant)
-        ant.printAntInfo()
+    for ants in antList:
+        ants.action()
+        ants.age = ants.age + 1
+        if (ants.age >= 250):
+            antList.remove(ants)
 
     spawnResources() #this will add new resorces to the map
 
@@ -85,6 +93,8 @@ def updateGameArea(day, month, year):
     infoText = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
     + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day)
     infoSection.config(text = infoText) #updates the hive info
+
+    antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
 
     window.after(1000, updateGameArea, day, month, year) #calls updateGameArea every 1000 msec
 
@@ -135,11 +145,11 @@ playAreaText.config(text=str1)
 #---------------------------------------------------------
 
 #Create the starting ants------------------------------
-antList.append(ant.gatherer(homeLocationX, homeLocationY))
-antList.append(ant.worker(homeLocationX, homeLocationY))
+antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
+antList.append(ant.worker(gameArray, homeLocationX, homeLocationY))
 print("Printing info...")
-for ant in antList:
-    ant.printAntInfo()
+for ants in antList:
+    ants.printAntInfo()
 #------------------------------------------------------
 
 #Loads UI elements------------------------------------
