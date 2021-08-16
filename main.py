@@ -1,7 +1,6 @@
 from tkinter import *
 from random import seed
 from random import randint
-import enum
 import ant
 import node
 #https://realpython.com/python-gui-tkinter/
@@ -15,17 +14,6 @@ month = 1
 day = 0
 count = 0
 antList = []
-
-class NodeConnection(enum.Enum):
-    topLeft = 1
-    top = 2
-    topRight = 3
-    left = 4
-    right = 5
-    bottomLeft = 6
-    bottom = 7
-    bottomRight = 8
-    
 
 def gameArray():
     rows, cols = (30, 70)
@@ -63,7 +51,6 @@ def gameArray():
 
 def updateGameArea(day, month, year):
     print("update") #testing
-    print(len(antList))
     #Time management
     day = day + 1
     if (day%31 == 0):
@@ -71,14 +58,15 @@ def updateGameArea(day, month, year):
     if (month%13 == 0 and day%31 == 0):
         year = year + 1
 
+    if day % 5 == 0:
+        spawnResources() #this will add new resorces to the map
+
     #ant action call here
     for ants in antList:
         ants.action()
         ants.age = ants.age + 1
         if (ants.age >= 250):
             antList.remove(ants)
-
-    spawnResources() #this will add new resorces to the map
 
     str2 = ""
     for ele in gameArray: #gets the updated array info
@@ -94,13 +82,21 @@ def updateGameArea(day, month, year):
     + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day)
     infoSection.config(text = infoText) #updates the hive info
 
-    antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
+    if day % 20 == 0:
+        #randomly select the type of ant
+        antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
+        #update the number of ants here
 
-    window.after(1000, updateGameArea, day, month, year) #calls updateGameArea every 1000 msec
+    window.after(100, updateGameArea, day, month, year) #calls updateGameArea every 1000 msec
 
 def spawnResources():
     #spawn resources in random areas
-    return
+        #needs to check for unit collision
+    resourceX = randint(0, 29)
+    resourceY = randint(0, 69)
+
+    #gameArray[resourceX][resourceY].occupied = True #can't be occupied since ant needs to go on it
+    gameArray[resourceX][resourceY].unit = "R"
 
 #Initializes the game window------------------------------------------------------------------------------------------
 window = Tk()
@@ -115,6 +111,7 @@ canvas = Canvas(window, width = 1000, height = 800)
 canvas.create_image(0, 0, image = backgroundImg)
 
 gameArray = gameArray()
+spawnResources()
 
 #Create GUI elements---------------------------------------------------------------------------------------------------
 gameInfoFrame = Frame(window)
