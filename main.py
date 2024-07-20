@@ -79,6 +79,7 @@ def updateGameArea(day, month, year):
                 ants.die()
                 antList.remove(ants)
                 numGatherers = numGatherers - 1
+                break
             if ants.role == "Gatherer" and ants.full:
                 ants.returnHome(gameArray)
             else:
@@ -103,6 +104,7 @@ def updateGameArea(day, month, year):
             #randomly select the type of ant
             if len(antList) <= 10:
                 antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
+                antList[-1].printAntInfo()
                 numGatherers = numGatherers + 1
             #update the number of ants here
     
@@ -163,7 +165,7 @@ playAreaText.config(text=str1)
 #Create the starting ants------------------------------
 antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
 antList.append(ant.worker(gameArray, homeLocationX, homeLocationY))
-print("Printing info...")
+print("Starting ants: ")
 for ants in antList:
     ants.printAntInfo()
 #------------------------------------------------------

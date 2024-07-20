@@ -16,7 +16,7 @@ class ant:
         location = None
         deathFlag = False
     def printAntInfo(self):
-        print("Name: " + str(self.name) + " " + "Role: " + self.role)
+        print("New Ant - Name: " + str(self.name) + " " + "Role: " + self.role)
         # + "\n" + "Location: " + str(self.xCoord) + " ," + str(self.yCoord))
 
 class gatherer(ant):
@@ -50,6 +50,7 @@ class gatherer(ant):
         #end of spawning-----------------------------------------------------------------------------------------
 
     def die(self):
+        self.location.occupied = False
         self.location.unit = "-"
         print(self.name + " died olf old age. They were a " + self.role)
 
