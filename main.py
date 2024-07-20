@@ -17,7 +17,7 @@ count = 0
 maxAnts = 10
 antList = []
 paused = FALSE
-food = 0
+food = [0]
 
 def pauseCallback():
     global paused
@@ -81,7 +81,7 @@ def updateGameArea(day, month, year):
                 numGatherers = numGatherers - 1
                 break
             if ants.role == "Gatherer" and ants.full:
-                ants.returnHome(gameArray)
+                ants.returnHome(gameArray, food)
             else:
                 ants.action()
                 ants.age = ants.age + 1
@@ -97,7 +97,7 @@ def updateGameArea(day, month, year):
         playAreaText.config(text=str2, fg = "white", bg = "black", font='Helvetica 12 bold') #updates the play area
     
         infoText = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
-        + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "\n" + "Food: " + str(food)
+        + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "\n" + "Food: " + str(food[0])
         infoSection.config(text = infoText) #updates the hive info
     
         if day % 20 == 0:
@@ -142,7 +142,7 @@ infoLabel = Label(gameInfoFrame, text = "Hive information", foreground="white", 
 
 #need to format text in label here
 hiveInfo = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
-    + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "Food: " + str(food)
+    + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "Food: " + str(food[0])
 
 infoSection = Label(gameInfoFrame, text = hiveInfo, height = 4, width = 35)
 

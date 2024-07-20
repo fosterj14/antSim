@@ -54,13 +54,12 @@ class gatherer(ant):
         self.location.unit = "-"
         print(self.name + " died olf old age. They were a " + self.role)
 
-    def returnHome(self, gameArray):
+    def returnHome(self, gameArray, food):
             global spawnOptions
-            global food
             if self.location in spawnOptions:
                 self.full = False
                 self.location.unit = "A"
-                #food = food + 1
+                food[0] = food[0] + 1
                 #print ("home")
             else:
                 moveOptions = (self.location.topLeft.coord, self.location.top.coord, self.location.topRight.coord, self.location.left.coord, self.location.right.coord, 
