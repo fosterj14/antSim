@@ -9,11 +9,19 @@ numWorkers = 1
 numGatherers = 1
 homeLocationX = randint(0, 29) #this will be a coordinate in the array
 homeLocationY = randint(0, 69)
+home = (homeLocationX, homeLocationY)
 year = 1
 month = 1
 day = 0
 count = 0
+maxAnts = 10
 antList = []
+paused = FALSE
+food = 0
+
+def pauseCallback():
+    global paused
+    paused = not paused
 
 def gameArray():
     rows, cols = (30, 70)
@@ -32,6 +40,7 @@ def gameArray():
             gameArea[i][j].bottomLeft = gameArea[(i+1)%rows][(j-1)%cols]
             gameArea[i][j].bottom = gameArea[(i+1)%rows][(j)%cols]
             gameArea[i][j].bottomRight = gameArea[(i+1)%rows][(j+1)%cols]
+            gameArea[i][j].coord = (i,j)
 
     gameArea[homeLocationX][homeLocationY].unit = "H"
     gameArea[homeLocationX][homeLocationY].occupied = True
@@ -50,43 +59,53 @@ def gameArray():
     return gameArea
 
 def updateGameArea(day, month, year):
-    print("update") #testing
-    #Time management
-    day = day + 1
-    if (day%31 == 0):
-        month = month + 1
-    if (month%13 == 0 and day%31 == 0):
-        year = year + 1
-
-    if day % 5 == 0:
-        spawnResources() #this will add new resorces to the map
-
-    #ant action call here
-    for ants in antList:
-        ants.action()
-        ants.age = ants.age + 1
-        if (ants.age >= 250):
-            antList.remove(ants)
-
-    str2 = ""
-    for ele in gameArray: #gets the updated array info
-        for ele2 in ele:
-            str2 += str(ele2.unit)
-            str2 += " "
-        str2 += "\n"
-    str2 = str2.rstrip("\n")
-
-    playAreaText.config(text=str2, fg = "white", bg = "black", font='Helvetica 12 bold') #updates the play area
-
-    infoText = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
-    + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day)
-    infoSection.config(text = infoText) #updates the hive info
-
-    if day % 20 == 0:
-        #randomly select the type of ant
-        antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
-        #update the number of ants here
-
+    global numGatherers
+    global paused
+    if not paused:
+        #Time management
+        day = day + 1
+        if (day%31 == 0):
+            month = month + 1
+        if (month%13 == 0 and day%31 == 0):
+            year = year + 1
+    
+        if day % 10 == 0:
+            spawnResources() #this will add new resorces to the map
+    
+        #ant action call here
+        for ants in antList:
+            ants.age = ants.age + 1
+            if (ants.age >= 250):
+                ants.die()
+                antList.remove(ants)
+                numGatherers = numGatherers - 1
+            if ants.role == "Gatherer" and ants.full:
+                ants.returnHome(gameArray)
+            else:
+                ants.action()
+                ants.age = ants.age + 1
+    
+        str2 = ""
+        for ele in gameArray: #gets the updated array info
+            for ele2 in ele:
+                str2 += str(ele2.unit)
+                str2 += " "
+            str2 += "\n"
+        str2 = str2.rstrip("\n")
+    
+        playAreaText.config(text=str2, fg = "white", bg = "black", font='Helvetica 12 bold') #updates the play area
+    
+        infoText = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
+        + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "\n" + "Food: " + str(food)
+        infoSection.config(text = infoText) #updates the hive info
+    
+        if day % 20 == 0:
+            #randomly select the type of ant
+            if len(antList) <= 10:
+                antList.append(ant.gatherer(gameArray, homeLocationX, homeLocationY))
+                numGatherers = numGatherers + 1
+            #update the number of ants here
+    
     window.after(100, updateGameArea, day, month, year) #calls updateGameArea every 1000 msec
 
 def spawnResources():
@@ -100,13 +119,13 @@ def spawnResources():
 
 #Initializes the game window------------------------------------------------------------------------------------------
 window = Tk()
-backgroundImg = PhotoImage("antPic.jpg")
+backgroundImg = PhotoImage("black-ants.jpg")
 window.resizable(width=FALSE, height=FALSE)
 window.geometry("1000x800")
 window.title("Ant Sim")
 #---------------------------------------------------------------------------------------------------------------------
 
-backgroundImg = PhotoImage(file = 'E:\\python_work\\antSim\\antPic.PNG')
+#backgroundImg = PhotoImage(file = 'resources\\black-ants.JPG')
 canvas = Canvas(window, width = 1000, height = 800)
 canvas.create_image(0, 0, image = backgroundImg)
 
@@ -121,11 +140,11 @@ infoLabel = Label(gameInfoFrame, text = "Hive information", foreground="white", 
 
 #need to format text in label here
 hiveInfo = "Workers: " + str(numWorkers) + "\t" + "Year: " + str(year) + "\n" + "Gatherers: " + str(numGatherers) + "\t" + "Month: " + str(month) + "\n" \
-    + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day)
+    + "Home Location: " + str(homeLocationX) + " ," + str(homeLocationY) + "\t" + "Day: " + str(day) + "Food: " + str(food)
 
 infoSection = Label(gameInfoFrame, text = hiveInfo, height = 4, width = 35)
 
-pauseBtn = Button(master=gameInfoFrame, text="Pause", width=5, height=1, bg="red", fg="white")
+pauseBtn = Button(master=gameInfoFrame, text="Pause", width=5, height=1, bg="red", fg="white", command=pauseCallback)
 
 playAreaText = Label(playAreaFrame, fg = "white", bg = "black")
 #------------------------------------------------------------------------------------------------------------------------

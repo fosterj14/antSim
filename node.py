@@ -10,6 +10,7 @@ class node:
         self.bottomLeft = None
         self.bottom = None
         self.bottomRight = None
+        self.coord = ()
 
     def default(self):
       self.unit = "-"
