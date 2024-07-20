@@ -17,7 +17,6 @@ class ant:
         deathFlag = False
     def printAntInfo(self):
         print("New Ant - Name: " + str(self.name) + " " + "Role: " + self.role)
-        # + "\n" + "Location: " + str(self.xCoord) + " ," + str(self.yCoord))
 
 class gatherer(ant):
     def __init__(self, gameArray, homeLocationX, homeLocationY):
@@ -60,7 +59,6 @@ class gatherer(ant):
                 self.full = False
                 self.location.unit = "A"
                 food[0] = food[0] + 1
-                #print ("home")
             else:
                 moveOptions = (self.location.topLeft.coord, self.location.top.coord, self.location.topRight.coord, self.location.left.coord, self.location.right.coord, 
                                self.location.bottomLeft.coord, self.location.bottomLeft.coord, self.location.bottom.coord, self.location.bottomRight.coord)

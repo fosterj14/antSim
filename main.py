@@ -25,7 +25,6 @@ def pauseCallback():
 
 def gameArray():
     rows, cols = (30, 70)
-    #gameArea = [["-" for i in range(cols)] for j in range(rows)]
 
     gameArea = [[node.node() for i in range(cols)] for j in range(rows)]
     
@@ -44,17 +43,6 @@ def gameArray():
 
     gameArea[homeLocationX][homeLocationY].unit = "H"
     gameArea[homeLocationX][homeLocationY].occupied = True
-
-    #testing the mapping of adjoining nodes
-    #gameArea[homeLocationX][homeLocationY].topLeft.unit = "TL"
-    #gameArea[homeLocationX][homeLocationY].top.unit = "T"
-    #gameArea[homeLocationX][homeLocationY].topRight.unit = "TR"
-    #gameArea[homeLocationX][homeLocationY].left.unit = "L"
-    #gameArea[homeLocationX][homeLocationY].right.unit = "R"
-    #gameArea[homeLocationX][homeLocationY].bottomLeft.unit = "BL"
-    #gameArea[homeLocationX][homeLocationY].bottom.unit = "B"
-    #gameArea[homeLocationX][homeLocationY].bottomRight.unit = "BR"
-    #-------------------------------------------------
 
     return gameArea
 
@@ -111,12 +99,9 @@ def updateGameArea(day, month, year):
     window.after(100, updateGameArea, day, month, year) #calls updateGameArea every 1000 msec
 
 def spawnResources():
-    #spawn resources in random areas
-        #needs to check for unit collision
     resourceX = randint(0, 29)
     resourceY = randint(0, 69)
 
-    #gameArray[resourceX][resourceY].occupied = True #can't be occupied since ant needs to go on it
     gameArray[resourceX][resourceY].unit = "R"
 
 #Initializes the game window------------------------------------------------------------------------------------------
@@ -127,7 +112,6 @@ window.geometry("1000x800")
 window.title("Ant Sim")
 #---------------------------------------------------------------------------------------------------------------------
 
-#backgroundImg = PhotoImage(file = 'resources\\black-ants.JPG')
 canvas = Canvas(window, width = 1000, height = 800)
 canvas.create_image(0, 0, image = backgroundImg)
 
